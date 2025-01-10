@@ -100,6 +100,7 @@ export class AdminController {
     });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('car-status')
   async updateCarContactStatus(@Body() body: { id: number; status: string }) {
     const { id, status } = body;
@@ -117,12 +118,25 @@ export class AdminController {
     }
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('rental-status')
   async updateEventContactStatus(@Body() body: { id: number; status: string }) {
     const { id, status } = body;
-    return this.adminService.updateEventContactStatus(id, status);
+    const response = await this.adminService.updateEventContactStatus(id, status);
+    try{
+      return {
+        message: 'Rental contact status changed successfully',
+        data: response,
+      };
+    }catch(err){
+      throw new UnauthorizedException({
+        message: response,
+        data: {},
+      });
+    }
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('car-assign-user')
   async assignUserToCarContact(@Body() body: { contactId: number; userId: number }) {
     const { contactId, userId } = body;
@@ -141,7 +155,8 @@ export class AdminController {
     
   }
 
-   @Patch('assign-user')
+  @UseGuards(AuthGuard('jwt'))
+   @Patch('rental-assign-user')
   async assignUserToEventContact(@Body() body: { contactId: number; userId: number }) {
     const { contactId, userId } = body;
     const response = await this.adminService.assignUserToEventContact(contactId, userId);
