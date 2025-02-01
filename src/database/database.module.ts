@@ -7,9 +7,9 @@ import { DatabaseService } from './database.service';
 const databasePoolFactory = async (configService: ConfigService) => {
   return new Pool({
     user: configService.get<string>('user')?configService.get<string>('user'):'postgres',
-    host: configService.get<string>('host')?configService.get<string>('host'):'localhost',
-    database: configService.get<string>('database')?configService.get<string>('database'):'dynamic-vibe',
-    password: configService.get<string>('password')?configService.get<string>('password'):'8767721125',
+    host: configService.get<string>('host')?configService.get<string>('host'):'147.93.47.24',
+    database: configService.get<string>('database')?configService.get<string>('database'):'dynamic_vibe',
+    password: configService.get<string>('password')?configService.get<string>('password'):'newpassword',
     port: configService.get<number>('db_port')?configService.get<number>('db_port'):5432,
   });
 };
