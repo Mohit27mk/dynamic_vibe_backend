@@ -17,11 +17,28 @@ async function bootstrap() {
     { bufferLogs: true, bodyParser: true, rawBody: true },
   );
 
-  await app.register(cors, { 
-    origin: '*',  // Allow all origins (for development)
-    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  const fastify = app.getHttpAdapter().getInstance();  // Get Fastify instance
+
+  await app.register(cors, {
+    origin: '*',
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
   });
+
+  // Manually handle OPTIONS requests
+  fastify.addHook('preHandler', async (req, reply) => {
+    if (req.method === 'OPTIONS') {
+      reply
+        .header('Access-Control-Allow-Origin', '*')
+        .header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS')
+        .header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        .code(204)  // No content response for OPTIONS
+        .send();
+    }
+  });
+
+
   
   const logger = new Logger();
 
