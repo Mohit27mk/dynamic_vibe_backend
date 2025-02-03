@@ -6,6 +6,8 @@ import {
 } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import cors from '@fastify/cors';
+
 
 
 async function bootstrap() {
@@ -15,8 +17,10 @@ async function bootstrap() {
     { bufferLogs: true, bodyParser: true, rawBody: true },
   );
 
-  app.enableCors({
-    origin: true, // Allow all origins
+  await app.register(cors, { 
+    origin: '*',  // Allow all origins (for development)
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
   
   const logger = new Logger();
