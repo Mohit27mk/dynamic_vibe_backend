@@ -6,8 +6,6 @@ import {
 } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import cors from '@fastify/cors';
-
 
 
 async function bootstrap() {
@@ -17,32 +15,9 @@ async function bootstrap() {
     { bufferLogs: true, bodyParser: true, rawBody: true },
   );
 
-  const fastify = app.getHttpAdapter().getInstance();  // Get Fastify instance
-
-  await app.register(cors, {
-    origin: '*',
-    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
+  app.enableCors({
+    origin: true, // Allow all origins
   });
-
-  // Manually handle OPTIONS requests
-  fastify.addHook('preHandler', async (req, reply) => {
-    console.log('Request Headers:', req.headers);  // Log headers for debugging
-    
-    if (req.method === 'OPTIONS') {
-      reply
-        .header('Access-Control-Allow-Origin', '*')
-        .header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS')
-        .header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-        .header('Access-Control-Allow-Credentials', 'true')
-        .code(204)
-        .send();
-    }
-  });
-  
-
-
   
   const logger = new Logger();
 
