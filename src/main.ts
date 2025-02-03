@@ -28,15 +28,19 @@ async function bootstrap() {
 
   // Manually handle OPTIONS requests
   fastify.addHook('preHandler', async (req, reply) => {
+    console.log('Request Headers:', req.headers);  // Log headers for debugging
+    
     if (req.method === 'OPTIONS') {
       reply
         .header('Access-Control-Allow-Origin', '*')
         .header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS')
         .header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-        .code(204)  // No content response for OPTIONS
+        .header('Access-Control-Allow-Credentials', 'true')
+        .code(204)
         .send();
     }
   });
+  
 
 
   
