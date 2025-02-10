@@ -160,7 +160,7 @@ export class AdminController {
   async assignUserToEventContact(@Body() body: { contactId: number; userId: number }) {
     const { contactId, userId } = body;
     const response = await this.adminService.assignUserToEventContact(contactId, userId);
-    if (typeof response !== 'string')
+    if (typeof response == 'string')
       return {
         message: 'Event rental contact fetched successfully',
         data: response,

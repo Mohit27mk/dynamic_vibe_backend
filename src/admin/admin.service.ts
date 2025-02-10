@@ -62,7 +62,7 @@ export class AdminService {
     async updateCarContactStatus(id: number, status: string): Promise<string> {
       try {
         await this.databaseService.executeQuery(
-          `SELECT dv_update_car_contact_status($1, $2)`,
+          `SELECT * from  dv_update_car_contact_status($1, $2)`,
           [id, status]
         );
         return `Car contact status updated successfully.`;
@@ -74,10 +74,11 @@ export class AdminService {
 
     async assignUserToEventContact(contactId: number, userId: number): Promise<string> {
       try {
-        await this.databaseService.executeQuery(
-          `SELECT dv_assign_user_to_event_contact($1, $2)`,
+      const asassignUserToEventContacts = await this.databaseService.executeQuery(
+          `SELECT * from dv_assign_user_to_event_contact($1, $2)`,
           [contactId, userId]
         );
+        console.log(asassignUserToEventContacts);
         return `User successfully assigned to event contact.`;
       } catch (error) {
         console.error(error);
@@ -88,7 +89,7 @@ export class AdminService {
     async assignUserToCarContact(contactId: number, userId: number): Promise<string> {
       try {
         await this.databaseService.executeQuery(
-          `SELECT dv_assign_user_to_car_contact($1, $2)`,
+          `SELECT * from  dv_assign_user_to_car_contact($1, $2)`,
           [contactId, userId]
         );
         return `User successfully assigned to car contact.`;
@@ -102,7 +103,7 @@ export class AdminService {
     async updateEventContactStatus(id: number, status: string): Promise<string> {
       try {
         await this.databaseService.executeQuery(
-          `SELECT dv_update_event_contact_status($1, $2)`,
+          `SELECT * from dv_update_event_contact_status($1, $2)`,
           [id, status]
         );
         return `Event contact status updated successfully.`;
